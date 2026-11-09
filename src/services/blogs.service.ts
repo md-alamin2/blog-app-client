@@ -43,4 +43,15 @@ export const blogService = {
       return { data: null, error: err };
     }
   },
+
+  getPostById: async function (id: string) {
+    try {
+      //   fetching blog data
+      const res = await fetch(`${API_URL}/posts/${id}`);
+      const post = await res.json();
+      return { data: post.data, error: null };
+    } catch (err) {
+      return { data: null, error: err };
+    }
+  },
 };
