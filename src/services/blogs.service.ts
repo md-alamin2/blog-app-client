@@ -6,6 +6,8 @@ const API_URL = env.API_URL;
 interface BlogParams {
   isFeatured?: boolean;
   search?: string;
+  limit?: number,
+  page?: string
 }
 
 interface BlogOptions {
