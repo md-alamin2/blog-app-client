@@ -1,13 +1,10 @@
 import type { NextConfig } from "next";
-import "./src/env"
+import "./src/env";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   experimental: {
     agentFeedback: true,
   },
-  cacheComponents: true,
-  partialPrefetching: true,
   turbopack: {
     rules: {
       "*.css": {
@@ -19,9 +16,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
-// import type { NextConfig } from "next";
-
-// const nextConfig: NextConfig = {};
-
-// export default nextConfig;

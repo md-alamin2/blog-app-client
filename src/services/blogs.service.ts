@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { cookies } from "next/headers";
 
 const API_URL = env.API_URL;
 
@@ -10,6 +11,13 @@ interface BlogParams {
 interface BlogOptions {
   caches?: RequestCache;
   revalidate?: number;
+}
+
+export interface BlogData{
+  title: string,
+  content: string,
+  status: string
+  tags?: string[]
 }
 
 export const blogService = {
@@ -34,6 +42,8 @@ export const blogService = {
         config.next = { revalidate: options.revalidate };
       }
 
+      config.next={...config.next, tags:["blogPosts"]}
+
       //   fetching blog data
       const res = await fetch(url.toString(), config);
       const posts = await res.json();
@@ -54,4 +64,29 @@ export const blogService = {
       return { data: null, error: err };
     }
   },
+
+  createPost: async function(blogData: BlogData){
+    try {
+      const cookieStore = await cookies();
+      
+          const res = await fetch(`${API_URL}/posts`, {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+              Cookie: cookieStore.toString(),
+            },
+            body: JSON.stringify(blogData),
+          });
+
+          const data = await res.json()
+
+          if(data.error){
+            return {data: null, error:{message: data.error|| "Error: post not created"}}
+          }
+
+          return {data: data.data, error: null}
+    } catch (error) {
+      return {data: null, error:{message: "Some thing went wrong"}}
+    }
+  }
 };
